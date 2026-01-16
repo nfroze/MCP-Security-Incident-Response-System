@@ -12,6 +12,8 @@ This demonstrates production-ready incident response automation: defence-in-dept
 
 ## Architecture
 
+![Cloud Architecture](screenshots/cloud-architecture.png)
+
 The system operates through two parallel workflows. The **automated containment path** starts when GuardDuty detects a medium-to-high severity finding on an EC2 instance. EventBridge captures the finding and invokes the Lambda function, which creates an isolation security group with no ingress/egress rules, applies it to the compromised instance, stores the original security groups in instance tags for later restoration, and sends a formatted Slack notification with finding details.
 
 The **investigation path** runs through the MCP server, which exposes five tools to Claude Desktop: listing all findings with pagination support, deep-diving into specific findings to extract attacker IP, timeline, and resource details, generating markdown incident reports, checking if instances are currently isolated, and reversing isolation by restoring original security groups. The MCP server communicates directly with AWS APIs using local credentials and includes graceful fallback to mock data for demonstration purposes.
